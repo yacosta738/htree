@@ -1,7 +1,7 @@
 package cu.edu.uclv.htree;
 
 /**
- * @author yuniel acosta, anakarla sotolongo, elvis hernandez y danay
+ * @author yuniel acosta, anakarla sotolongo, elvis hernandez y danay serrano
  * Created in 18/9/2018 09:24
  * @project htree
  **/
