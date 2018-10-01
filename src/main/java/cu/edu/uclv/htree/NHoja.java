@@ -11,8 +11,8 @@ import java.util.HashMap;
  *
  * @author anakarla
  */
-public class NHoja <E,V> extends Nodo<E,V> {
-    private HashMap<E,ArrayList<V>> valores;
+public class NHoja <E extends Comparable<E>,V> extends Nodo<E,V> {
+    private HashMap<E,ArrayList<V>> valores;//oids Lista de objetos que seran borrados
     private NHoja<E,V> sgteHerm;
 
     public NHoja(HashMap<E, ArrayList<V>> valores, NHoja<E, V> sgteHerm, Nodo<E, V> padre) {

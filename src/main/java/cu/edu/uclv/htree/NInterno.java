@@ -12,9 +12,9 @@ import java.util.HashMap;
  *
  * @author anakarla
  */
-public class NInterno <E,V> extends Nodo<E,V> {
+public class NInterno <E extends Comparable<E>,V> extends Nodo<E,V> {
     
-    private ArrayList<E> k;
+    private ArrayList<E> k;//H -> Indice a partir del cual se borra
     private ArrayList<Nodo<E,V>> b;
     private int cantL;
     private HashMap<ArrayList<E>,HTree<E,V>> l;

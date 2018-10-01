@@ -9,7 +9,7 @@ package cu.edu.uclv.htree;
  *
  * @author anakarla
  */
-public abstract class Nodo<E,V> {
+public abstract class Nodo<E extends Comparable<E>,V> {
     protected Nodo<E,V> padre;
 
     public Nodo(Nodo<E, V> padre) {
