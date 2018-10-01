@@ -50,8 +50,7 @@ public class HTree <E extends Comparable<E>,V> {
     /**
      *
      * @param valueToDelete indexed value to delete
-     * @param indexH  index to delete from.
-     * @param oids list of objects to be deleted
+     * @param key  index to delete from.
      *             Algorithm Delete
      *
      *      (1)    Traverse index H to the leaf node that contains the value valueToDelete.
@@ -84,8 +83,11 @@ public class HTree <E extends Comparable<E>,V> {
      *              under flows, repeat step 3 with parent node as cnode.
      *
      */
-    public void delete(V valueToDelete,E indexH,HashMap<E,ArrayList<V>> oids){
-
+    public void delete(E key, V valueToDelete){
+        ArrayList <V> cnode = busqueda(raiz, key, key);
+        if(!cnode.isEmpty()){
+            cnode.remove(valueToDelete);
+        }
     }
 
 }
