@@ -5,6 +5,8 @@
  */
 package cu.edu.uclv.htree;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author anakarla
@@ -24,5 +26,7 @@ public abstract class Nodo<E extends Comparable<E>,V> {
         this.padre = padre;
     }
     
+    abstract public ArrayList<V> busqueda(E min, E max);
+  
     
 }

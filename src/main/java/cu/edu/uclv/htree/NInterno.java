@@ -7,6 +7,8 @@ package cu.edu.uclv.htree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  *
@@ -61,6 +63,35 @@ public class NInterno <E extends Comparable<E>,V> extends Nodo<E,V> {
         this.l = l;
     }
     
+    public ArrayList<V> busqueda(E min, E max){
+        ArrayList<V> res= new ArrayList<V>();
+        int i=0;
+        while(i<k.size() && min.compareTo(k.get(i))>0)
+            i++;
+        res.addAll(b.get(i).busqueda(min, max));
+        if(i<k.size()){
+            i++;
+            while(i<k.size() && max.compareTo(k.get(i))>0){
+                res.addAll(b.get(i).busqueda(min, max));
+                i++;
+            }
+            res.addAll(b.get(i).busqueda(min, max));
+        }
+        
+        boolean parar=false;
+        Set<ArrayList<E>> intervalo=l.keySet();
+        for (Iterator<ArrayList<E>> it = intervalo.iterator(); it.hasNext() && !parar;) {
+            ArrayList<E> arrayList = it.next();
+            if((min.compareTo(arrayList.get(0))>=0 && min.compareTo(arrayList.get(1))<=0) || (max.compareTo(arrayList.get(0))>=0 && max.compareTo(arrayList.get(1))<=0)){
+                HTree subArb=l.get(arrayList);
+                res.addAll(subArb.busqueda(subArb.getRaiz(), min, max));
+            }else
+                parar=true;
+            
+        }
+        
+        return res;
+    }
     
 }
 

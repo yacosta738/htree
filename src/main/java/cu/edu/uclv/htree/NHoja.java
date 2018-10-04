@@ -7,6 +7,8 @@ package cu.edu.uclv.htree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 /**
  *
  * @author anakarla
@@ -37,7 +39,20 @@ public class NHoja <E extends Comparable<E>,V> extends Nodo<E,V> {
         this.sgteHerm = sgteHerm;
     }
     
-    
+    public ArrayList<V> busqueda(E min, E max){
+        ArrayList<V> res= new ArrayList<V>();
+        Set<E> llaves=valores.keySet();
+        boolean parar=false;
+        for (Iterator<E> it = llaves.iterator(); it.hasNext() && !parar;) {
+            E e = it.next();
+            if(e.compareTo(min)>=0 && e.compareTo(max)<=0)
+                res.addAll(valores.get(e));
+            else
+                parar=true;            
+        }
+        
+        return res;
+    }
     
     
 }

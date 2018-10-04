@@ -36,9 +36,11 @@ public class HTree <E extends Comparable<E>,V> {
     }
     
     public ArrayList<V> busqueda( Nodo<E, V> n, E min, E max){
-        
-     ArrayList<V> res=new ArrayList<V>();
-    
+     
+     ArrayList<V> res= new ArrayList<V>();   
+     if(n==null)
+        return res;
+     res.addAll(n.busqueda(min,max));
      return res;
      
     } 
