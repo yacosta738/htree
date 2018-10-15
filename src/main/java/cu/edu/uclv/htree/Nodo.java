@@ -12,21 +12,34 @@ import java.util.ArrayList;
  * @author anakarla
  */
 public abstract class Nodo<E extends Comparable<E>,V> {
-    protected Nodo<E,V> padre;
+    protected NInterno<E,V> padre;
+    protected int orden;
 
-    public Nodo(Nodo<E, V> padre) {
+    public Nodo(NInterno<E, V> padre, int orden) {
         this.padre = padre;
+        this.orden=orden;
     }
     
-    public Nodo<E,V> getPadre() {
+    public NInterno<E,V> getPadre() {
         return padre;
     }
 
-    public void setPadre(Nodo<E,V> padre) {
+    public void setPadre(NInterno<E,V> padre) {
         this.padre = padre;
     }
+
+    public int getOrden() {
+        return orden;
+    }
+
+    public void setOrden(int orden) {
+        this.orden = orden;
+    }
+    
     
     abstract public ArrayList<V> busqueda(E min, E max);
-  
+    abstract public NHoja<E,V> busqAux(E llave);
+    abstract public void dividir();
+    abstract public void merge();
     
 }

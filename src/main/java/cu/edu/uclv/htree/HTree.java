@@ -13,10 +13,12 @@ public class HTree <E extends Comparable<E>,V> {
     
     private NInterno<E,V> raiz;
     private int orden;
+    private int id;
 
-    public HTree(NInterno<E, V> raiz, int orden) {
+    public HTree(NInterno<E, V> raiz, int orden, int id) {
         this.raiz = raiz;
         this.orden = orden;
+        this.id=id;
     }
 
     public NInterno<E, V> getRaiz() {
@@ -34,6 +36,15 @@ public class HTree <E extends Comparable<E>,V> {
     public void setOrden(int orden) {
         this.orden = orden;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     
     public ArrayList<V> busqueda( Nodo<E, V> n, E min, E max){
      
@@ -45,8 +56,44 @@ public class HTree <E extends Comparable<E>,V> {
      
     } 
     
-    public void insertar(E llave, V valor){
+    public NHoja<E,V> busqAux(NInterno<E,V> n, E llave){
+        return n.busqAux(llave);
+    }
     
+    public void insertar(E llave, V valor){
+        if(raiz==null){
+            ArrayList<E> lc=new ArrayList<E>();
+            lc.add(llave);
+            raiz=new NInterno<E, V>(lc, null, 0, null, null,orden);
+            
+            ArrayList<V> lv=new ArrayList<V>();
+            lv.add(valor);
+            HashMap<E, ArrayList<V>> hm=new HashMap<E, ArrayList<V>>();
+            hm.put(llave, lv);
+            NHoja<E,V> hijo= new NHoja<E, V>(hm, null,raiz,orden);
+            
+            ArrayList<Nodo<E, V>>lh=new ArrayList<Nodo<E, V>>();
+            lh.add(hijo);
+            raiz.setB(lh);
+            
+            
+        }else{
+            NInterno<E,V> n=raiz;
+            while(n.getPadre()!=null)
+                n=n.getPadre();
+            NHoja<E,V> nh=busqAux(n, llave);
+            HashMap<E,ArrayList<V>> th=nh.getValores();   
+            ArrayList<V> l;
+            if(th.containsKey(llave))
+                l=th.get(llave);
+            else
+               l=new ArrayList<V>();
+            l.add(valor);
+            th.put(llave, l);
+            nh.setValores(th);
+            if(th.size()>orden)
+                nh.dividir();
+        }
     }
 
     /**
@@ -85,10 +132,59 @@ public class HTree <E extends Comparable<E>,V> {
      *              under flows, repeat step 3 with parent node as cnode.
      *
      */
-    public void delete(E key, V valueToDelete){
-        ArrayList <V> cnode = busqueda(raiz, key, key);
-        if(!cnode.isEmpty()){
-            cnode.remove(valueToDelete);
+    public void delete(E key, V valueToDelete) {
+        NHoja<E, V> cnode = busqAux(raiz, key);
+        HashMap<E, ArrayList<V>> valores = cnode.getValores();
+        if (valores != null) {
+            ArrayList<V> oids = valores.get(key);
+            if (oids != null) {
+                oids.remove(valueToDelete);
+                if (oids.isEmpty()) {
+                    valores.remove(key);
+                }
+            } else {
+                valores.remove(key);
+            }
+            if (valores.isEmpty()) {//si no hay mas valores eliminar el nodo
+                NInterno<E, V> padre = cnode.getPadre();
+                padre.getB().remove(cnode);
+                //en padre eliminar k
+                if (padre.isUnderflow()) {//underflows
+                    padre.merge();
+                }
+            } else if (cnode.isUnderflow()) { //underflows
+                cnode.merge();
+            }
+        }
+    }
+    
+    public void insertar(E llave, V valor, HTree<E,V> ht){
+        int ident=ht.getId();
+        if(id==ident)
+            insertar(llave, valor);
+        else{
+            NInterno<E,V> n=raiz;
+            HTree<E,V> h= n.buscarHtree(ident);
+            if(h!=null)
+                h.insertar(llave, valor);
+            else
+                insertar(llave, valor);
+        }
+    
+    }
+    
+    public void delete(E key, V valueToDelete, HTree<E,V> ht){
+        int ident=ht.getId();
+        //eliminar en todos los htrees anidados
+        if(id==ident)
+            delete(key, valueToDelete);
+        else{
+            NInterno<E,V> node=raiz;
+            HTree<E,V> htree= node.buscarHtree(ident);
+            if(htree!=null)
+                htree.delete(key, valueToDelete);
+            else
+               delete(key, valueToDelete);
         }
     }
 
