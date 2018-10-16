@@ -106,7 +106,7 @@ public class NHoja <E extends Comparable<E>,V> extends Nodo<E,V> {
             ArrayList<E> k = padre.getK();
 
             if (sgteHerm.getSgteHerm() != null) {
-                //actualizo el siguiente hermano con el hermano de su hermano si este existe
+                //update the next brother with his brother's brother if he exists
                 sgteHerm = sgteHerm.getSgteHerm();
             } else {
                 sgteHerm = null;
@@ -117,8 +117,8 @@ public class NHoja <E extends Comparable<E>,V> extends Nodo<E,V> {
                 index++;
             }
             
-            k.remove(index);//elimino la llave
-            b.remove(index + 1);//elimino la referencia al hijo que mescle
+            k.remove(index);//delete the key
+            b.remove(index + 1);//remove the reference to the mixed child
 
             //if overflow occur in leaf node, split the node
             if (isOverflow()) {//overflow
@@ -129,7 +129,9 @@ public class NHoja <E extends Comparable<E>,V> extends Nodo<E,V> {
                 padre.merge();
             }
 
-        }//ver si no tiene hermano como unirlos
+        }else{
+
+        }
 
     }
    
